@@ -1,0 +1,29 @@
+---
+abstract: 'Object-oriented methods of handling list of URLs.'
+author:
+  - 'Tore Aursand <toreau@gmail.com>'
+build_requires:
+  Mouse: 1.05
+  MouseX::NativeTraits: 1.09
+  Test::More: 0.98
+  URI: 1.6
+  namespace::autoclean: 0.13
+configure_requires:
+  Module::Build: 0.40
+dynamic_config: 1
+generated_by: 'Module::Build version 0.4003, CPAN::Meta::Converter version 2.120921'
+license: perl
+meta-spec:
+  url: http://module-build.sourceforge.net/META-spec-v1.4.html
+  version: 1.4
+name: URL-List
+provides:
+  Changes:
+    file: lib/Changes.pm
+    version: 0
+  URL::List:
+    file: lib/URL/List.pm
+    version: 0.01
+resources:
+  license: http://dev.perl.org/licenses/
+version: 0.01
