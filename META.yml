@@ -18,12 +18,9 @@ meta-spec:
   version: 1.4
 name: URL-List
 provides:
-  Changes:
-    file: lib/Changes.pm
-    version: 0
   URL::List:
     file: lib/URL/List.pm
-    version: 0.02
+    version: 0.03
 resources:
   license: http://dev.perl.org/licenses/
-version: 0.02
+version: 0.03

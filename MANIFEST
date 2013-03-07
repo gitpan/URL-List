@@ -1,6 +1,5 @@
 Build.PL
 Changes
-lib/Changes.pm
 lib/URL/List.pm
 Makefile.PL
 MANIFEST			This list of files
