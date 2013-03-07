@@ -1,4 +1,7 @@
 Revision history for URL::List
 
+0.02	2013-03-07
+        - Added 'Domain::PublicSuffix' to Makefile.PL.
+
 0.01    2013-03-04
         - Initial release.
