@@ -1,5 +1,8 @@
 Revision history for URL::List
 
+0.04    2013-03-08
+        - Fixed prereqs.
+
 0.03	2013-03-07
         - Removed lib/Changes.pm. Have no idea where it came from. :)
 
