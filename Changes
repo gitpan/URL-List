@@ -1,5 +1,8 @@
 Revision history for URL::List
 
+0.05    2013-03-08
+        - Added MouseX::NativeTraits to prereqs.
+
 0.04    2013-03-08
         - Fixed prereqs.
 
