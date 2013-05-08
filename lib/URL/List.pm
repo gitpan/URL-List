@@ -8,12 +8,13 @@ URL::List - Object-oriented methods of handling list of URLs.
 
 =head1 VERSION
 
-Version 0.05
+Version 0.06
 
 =cut
 
-our $VERSION = '0.05';
+our $VERSION = '0.06';
 
+use Carp;
 use URI;
 use Domain::PublicSuffix;
 
@@ -112,12 +113,10 @@ sub _build_distributions {
 
     foreach my $url ( $self->all ) {
         if ( my $uri = URI->new($url) ) {
-            $urls{ $uri->canonical }++;
+            $urls{ $url }++;
         }
         else {
-            #
-            # TODO: Add error handling
-            #
+            carp "Couldn't create a URI object from '" . $url . "'. Skipping it!";
         }
     }
 
@@ -128,13 +127,23 @@ sub _build_distributions {
     my $suffix        = Domain::PublicSuffix->new;
 
     foreach my $url ( keys %urls ) {
-        my $host   = URI->new( $url )->host;
-        my $domain = $suffix->get_root_domain( $host );
-        my $tld    = $suffix->tld;
+        my $host = undef;
 
-        push( @{$distributions{host}->{$host}},     $url );
-        push( @{$distributions{domain}->{$domain}}, $url );
-        push( @{$distributions{tld}->{$tld}},       $url );
+        eval {
+            $host = URI->new( $url )->host;
+        };
+
+        if ( $@ ) {
+            carp "Failed to determine host from '" . $url . "'. Skipping it!";
+        }
+        else {
+            my $domain = $suffix->get_root_domain( $host );
+            my $tld    = $suffix->tld;
+
+            push( @{$distributions{host}->{$host}},     $url );
+            push( @{$distributions{domain}->{$domain}}, $url );
+            push( @{$distributions{tld}->{$tld}},       $url );
+        }
     }
 
     #

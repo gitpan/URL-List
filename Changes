@@ -1,9 +1,19 @@
 Revision history for URL::List
 
+0.06    2013-05-08
+        - URLs added to the list will no longer be made canonical. This is to
+          ensure that URLs are never changed. Look at URL::Normalize if you
+          want to make URLs canonical (or normalize them in any other way).
+        - Host name retrieval is now eval'ed, so that illegal URLs added to the
+          list won't break functionality.
+        - Better logging when something fails.
+        - Added Carp to prereqs.
+
 0.05    2013-03-08
         - Added MouseX::NativeTraits to prereqs.
 
 0.04    2013-03-08
+        - Now using Dist::Zilla.
         - Fixed prereqs.
 
 0.03	2013-03-07
