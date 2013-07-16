@@ -24,14 +24,14 @@ my %WriteMakefileArgs = (
   "NAME" => "URL::List",
   "PREREQ_PM" => {
     "Carp" => "1.26",
-    "Domain::PublicSuffix" => "0.08",
-    "Mouse" => "1.05",
+    "Domain::PublicSuffix" => "0.09",
+    "Mouse" => "1.11",
     "MouseX::NativeTraits" => "1.09",
     "URI" => "1.60",
     "namespace::autoclean" => "0.13"
   },
   "TEST_REQUIRES" => {},
-  "VERSION" => "0.06",
+  "VERSION" => "0.07",
   "test" => {
     "TESTS" => "t/*.t"
   }

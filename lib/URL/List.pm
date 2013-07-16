@@ -8,11 +8,11 @@ URL::List - Object-oriented methods of handling list of URLs.
 
 =head1 VERSION
 
-Version 0.06
+Version 0.07
 
 =cut
 
-our $VERSION = '0.06';
+our $VERSION = '0.07';
 
 use Carp;
 use URI;
@@ -91,7 +91,7 @@ duplicates.
 
 =head2 count
 
-Returns the number of URLs in the list, including eventual duplicates.
+Returns the number of URLs in the list, including potential duplicates.
 
 =head2 distributions
 
@@ -109,11 +109,12 @@ sub _build_distributions {
     #
     # Create a list of valid, unique and canonical URLs
     #
-    my %urls = ();
+    my @urls = ();
 
     foreach my $url ( $self->all ) {
         if ( my $uri = URI->new($url) ) {
-            $urls{ $url }++;
+            # $urls{ $url }++;
+            push( @urls, $url );
         }
         else {
             carp "Couldn't create a URI object from '" . $url . "'. Skipping it!";
@@ -126,7 +127,7 @@ sub _build_distributions {
     my %distributions = ();
     my $suffix        = Domain::PublicSuffix->new;
 
-    foreach my $url ( keys %urls ) {
+    foreach my $url ( @urls ) {
         my $host = undef;
 
         eval {

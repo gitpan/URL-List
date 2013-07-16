@@ -1,5 +1,10 @@
 Revision history for URL::List
 
+0.07    2013-07-16
+        - Fixed URL sorting, so that random hash order doesn't break anything.
+        - Improved the documentation.
+        - Bumped required modules' version numbers.
+
 0.06    2013-05-08
         - URLs added to the list will no longer be made canonical. This is to
           ensure that URLs are never changed. Look at URL::Normalize if you
@@ -17,7 +22,7 @@ Revision history for URL::List
         - Fixed prereqs.
 
 0.03	2013-03-07
-        - Removed lib/Changes.pm. Have no idea where it came from. :)
+        - Removed lib/Changes.pm.
 
 0.02	2013-03-07
         - Added 'Domain::PublicSuffix' to Makefile.PL.
