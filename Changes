@@ -1,5 +1,9 @@
 Revision history for URL::List
 
+0.08    2013-07-22
+        - Added the possibility of ignoring duplicate URLs.
+        - Added List::MoreUtils to requirements.
+
 0.07    2013-07-16
         - Fixed URL sorting, so that random hash order doesn't break anything.
         - Improved the documentation.

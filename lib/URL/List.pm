@@ -8,25 +8,27 @@ URL::List - Object-oriented methods of handling list of URLs.
 
 =head1 VERSION
 
-Version 0.07
+Version 0.08
 
 =cut
 
-our $VERSION = '0.07';
+our $VERSION = '0.08';
 
 use Carp;
-use URI;
 use Domain::PublicSuffix;
+use List::MoreUtils qw( uniq );
+use URI;
 
 =head1 SYNOPSIS
 
     use URL::List;
 
-    my $list = URL::List->new;
+    my $list = URL::List->new; # or URL::List->new;
     $list->add( 'http://www.google.com/' );
     $list->add( 'http://www.bbc.co.uk/' );
 
     my %distributed_by_hosts = $list->distributed_by_host;
+
     # $VAR1 = {
     #     'www.google.com' => [
     #         'http://www.google.com/',
@@ -37,6 +39,7 @@ use Domain::PublicSuffix;
     # };
 
     my %distributed_by_domains = $list->distributed_by_domain;
+
     # $VAR1 = {
     #     'google.com' => [
     #         'http://www.google.com/',
@@ -47,6 +50,7 @@ use Domain::PublicSuffix;
     # };
 
     my %distributed_by_tlds = $list->distributed_by_tld;
+
     # $VAR1 = {
     #     'com' => [
     #         'http://www.google.com/',
@@ -66,7 +70,16 @@ domain names to different worker robots.
 
 =head1 METHODS
 
+=head2 new
+
+Returns an instance of URL::List.
+
+Takes one optional parameter, 'allow_duplicates', which is default 0. By setting
+it to true (1), URL::List will not filter out duplicate articles.
+
 =cut
+
+has 'allow_duplicates' => ( isa => 'Bool', is => 'rw', default => 0 );
 
 has 'urls' => (
     traits  => [ 'Array' ],
@@ -107,18 +120,24 @@ sub _build_distributions {
     my $self = shift;
 
     #
-    # Create a list of valid, unique and canonical URLs
+    # Create a list of valid URLs
     #
     my @urls = ();
 
     foreach my $url ( $self->all ) {
         if ( my $uri = URI->new($url) ) {
-            # $urls{ $url }++;
             push( @urls, $url );
         }
         else {
             carp "Couldn't create a URI object from '" . $url . "'. Skipping it!";
         }
+    }
+
+    #
+    # Allow duplicates?
+    #
+    unless ( $self->allow_duplicates ) {
+        @urls = List::MoreUtils::uniq( @urls );
     }
 
     #

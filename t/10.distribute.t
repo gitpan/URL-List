@@ -29,6 +29,12 @@ my @urls = (
     'http://www.vg.no/',
     'http://www.vg.no:80/',
     'http://www.vg.no/index.html',
+
+    'http://www.vg.no',
+    'http://www.vg.no:80',
+    'http://www.vg.no/',
+    'http://www.vg.no:80/',
+    'http://www.vg.no/index.html',
 );
 
 my $list = URL::List->new;
@@ -40,5 +46,15 @@ foreach my $url ( @urls ) {
 is_deeply( $list->distributed_by_host,   { 'www.vg.no' => [ 'http://www.vg.no', 'http://www.vg.no:80', 'http://www.vg.no/', 'http://www.vg.no:80/', 'http://www.vg.no/index.html' ] } );
 is_deeply( $list->distributed_by_domain, { 'vg.no'     => [ 'http://www.vg.no', 'http://www.vg.no:80', 'http://www.vg.no/', 'http://www.vg.no:80/', 'http://www.vg.no/index.html' ] } );
 is_deeply( $list->distributed_by_tld,    { 'no'        => [ 'http://www.vg.no', 'http://www.vg.no:80', 'http://www.vg.no/', 'http://www.vg.no:80/', 'http://www.vg.no/index.html' ] } );
+
+$list = URL::List->new( allow_duplicates => 1 );
+
+foreach my $url ( @urls ) {
+    $list->add( $url );
+}
+
+is_deeply( $list->distributed_by_host,   { 'www.vg.no' => [ 'http://www.vg.no', 'http://www.vg.no:80', 'http://www.vg.no/', 'http://www.vg.no:80/', 'http://www.vg.no/index.html', 'http://www.vg.no', 'http://www.vg.no:80', 'http://www.vg.no/', 'http://www.vg.no:80/', 'http://www.vg.no/index.html' ] } );
+is_deeply( $list->distributed_by_domain, { 'vg.no'     => [ 'http://www.vg.no', 'http://www.vg.no:80', 'http://www.vg.no/', 'http://www.vg.no:80/', 'http://www.vg.no/index.html', 'http://www.vg.no', 'http://www.vg.no:80', 'http://www.vg.no/', 'http://www.vg.no:80/', 'http://www.vg.no/index.html' ] } );
+is_deeply( $list->distributed_by_tld,    { 'no'        => [ 'http://www.vg.no', 'http://www.vg.no:80', 'http://www.vg.no/', 'http://www.vg.no:80/', 'http://www.vg.no/index.html', 'http://www.vg.no', 'http://www.vg.no:80', 'http://www.vg.no/', 'http://www.vg.no:80/', 'http://www.vg.no/index.html' ] } );
 
 done_testing;
