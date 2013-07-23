@@ -27,12 +27,11 @@ my %WriteMakefileArgs = (
     "Domain::PublicSuffix" => "0.09",
     "List::MoreUtils" => "0.33",
     "Mouse" => "1.11",
-    "MouseX::NativeTraits" => "1.09",
     "URI" => "1.60",
     "namespace::autoclean" => "0.13"
   },
   "TEST_REQUIRES" => {},
-  "VERSION" => "0.08",
+  "VERSION" => "0.09",
   "test" => {
     "TESTS" => "t/*.t"
   }

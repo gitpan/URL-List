@@ -8,11 +8,11 @@ URL::List - Object-oriented methods of handling list of URLs.
 
 =head1 VERSION
 
-Version 0.08
+Version 0.09
 
 =cut
 
-our $VERSION = '0.08';
+our $VERSION = '0.09';
 
 use Carp;
 use Domain::PublicSuffix;
@@ -27,7 +27,7 @@ use URI;
     $list->add( 'http://www.google.com/' );
     $list->add( 'http://www.bbc.co.uk/' );
 
-    my %distributed_by_hosts = $list->distributed_by_host;
+    my $distributed_by_hosts = $list->distributed_by_host;
 
     # $VAR1 = {
     #     'www.google.com' => [
@@ -38,7 +38,7 @@ use URI;
     #     ],
     # };
 
-    my %distributed_by_domains = $list->distributed_by_domain;
+    my $distributed_by_domains = $list->distributed_by_domain;
 
     # $VAR1 = {
     #     'google.com' => [
@@ -49,7 +49,7 @@ use URI;
     #     ],
     # };
 
-    my %distributed_by_tlds = $list->distributed_by_tld;
+    my $distributed_by_tlds = $list->distributed_by_tld;
 
     # $VAR1 = {
     #     'com' => [
@@ -79,32 +79,54 @@ it to true (1), URL::List will not filter out duplicate articles.
 
 =cut
 
-has 'allow_duplicates' => ( isa => 'Bool', is => 'rw', default => 0 );
-
-has 'urls' => (
-    traits  => [ 'Array' ],
-    isa     => 'ArrayRef[Str]',
-    is      => 'ro',
-    default => sub { [] },
-    handles => {
-        'add'   => 'push',
-        'all'   => 'elements',
-        'count' => 'count',
-    },
-);
+has 'allow_duplicates' => ( isa => 'Bool',          is => 'rw', default => 0          );
+has 'urls'             => ( isa => 'ArrayRef[Str]', is => 'rw', default => sub { [] } );
 
 =head2 add( $url )
 
 Add a URL to the list.
+
+=cut
+
+sub add {
+    my $self = shift;
+    my $url  = shift;
+
+    if ( defined $url && length $url ) {
+        push( @{$self->urls}, $url );
+    }
+}
 
 =head2 all
 
 Returns an array reference of all the URLs in the list. This list can include
 duplicates.
 
+=cut
+
+sub all {
+    my $self = shift;
+
+    if ( $self->allow_duplicates ) {
+        return $self->urls;
+    }
+    else {
+        return [ List::MoreUtils::uniq(@{$self->urls}) ];
+    }
+}
+
 =head2 count
 
-Returns the number of URLs in the list, including potential duplicates.
+Returns the number of URLs in the list, including potential duplicates,
+depending on the 'allow_duplicates' setting.
+
+=cut
+
+sub count {
+    my $self = shift;
+
+    return scalar( @{$self->all} );
+}
 
 =head2 distributions
 
@@ -124,20 +146,13 @@ sub _build_distributions {
     #
     my @urls = ();
 
-    foreach my $url ( $self->all ) {
+    foreach my $url ( @{$self->all} ) {
         if ( my $uri = URI->new($url) ) {
             push( @urls, $url );
         }
         else {
             carp "Couldn't create a URI object from '" . $url . "'. Skipping it!";
         }
-    }
-
-    #
-    # Allow duplicates?
-    #
-    unless ( $self->allow_duplicates ) {
-        @urls = List::MoreUtils::uniq( @urls );
     }
 
     #
@@ -156,13 +171,17 @@ sub _build_distributions {
         if ( $@ ) {
             carp "Failed to determine host from '" . $url . "'. Skipping it!";
         }
-        else {
+
+        if ( defined $host && length $host ) {
             my $domain = $suffix->get_root_domain( $host );
             my $tld    = $suffix->tld;
 
             push( @{$distributions{host}->{$host}},     $url );
-            push( @{$distributions{domain}->{$domain}}, $url );
-            push( @{$distributions{tld}->{$tld}},       $url );
+            push( @{$distributions{domain}->{$domain}}, $url ) if ( defined $domain && length $domain );
+            push( @{$distributions{tld}->{$tld}},       $url ) if ( defined $tld    && length $tld    );
+        }
+        else {
+            carp "Failed to determine host from '" . $url . "'. Skipping it!";
         }
     }
 

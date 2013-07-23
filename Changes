@@ -1,5 +1,10 @@
 Revision history for URL::List
 
+0.09    2013-07-23
+        - Removed MouseX::NativeTraits, because it's too slow.
+        - Added checks for 'host', 'domain' and 'tld' validity.
+        - Improved the documentation.
+
 0.08    2013-07-22
         - Added the possibility of ignoring duplicate URLs.
         - Added List::MoreUtils to requirements.
