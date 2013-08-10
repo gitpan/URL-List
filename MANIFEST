@@ -4,7 +4,9 @@ MANIFEST
 META.yml
 Makefile.PL
 README
+README.md
 dist.ini
 lib/URL/List.pm
 t/00.load.t
 t/10.distribute.t
+t/20.clear.t

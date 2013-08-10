@@ -1,5 +1,11 @@
 Revision history for URL::List
 
+0.10    2013-08-10
+        - Added clear() method, with flush() as an alias.
+        - Improved the documentation.
+        - Improved URL error checking.
+        - Improved tests.
+
 0.09    2013-07-23
         - Removed MouseX::NativeTraits, because it's too slow.
         - Added checks for 'host', 'domain' and 'tld' validity.
