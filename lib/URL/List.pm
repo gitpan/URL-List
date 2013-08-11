@@ -8,11 +8,11 @@ URL::List - Object-oriented methods of handling list of URLs.
 
 =head1 VERSION
 
-Version 0.10
+Version 0.11
 
 =cut
 
-our $VERSION = '0.10';
+our $VERSION = '0.11';
 
 use Carp;
 use Domain::PublicSuffix;
@@ -140,7 +140,7 @@ Clears the URL list.
 sub clear {
     my $self = shift;
 
-    $self->urls = [];
+    $self->urls( [] );
 }
 
 =head2 flush

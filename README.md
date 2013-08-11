@@ -4,7 +4,7 @@ URL::List - Object-oriented methods of handling list of URLs.
 
 # VERSION
 
-Version 0.10
+Version 0.11
 
 # SYNOPSIS
 

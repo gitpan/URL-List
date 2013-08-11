@@ -21,4 +21,4 @@ requires:
   Mouse: 1.11
   URI: 1.60
   namespace::autoclean: 0.13
-version: 0.10
+version: 0.11
